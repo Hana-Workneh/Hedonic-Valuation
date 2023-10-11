@@ -175,7 +175,7 @@
       let calDescription = `Custom Calculation:\n`;
 
       for (const attribute of this.customAttributes) {
-        calDescription += ` (${attribute.coefficient} * ${attribute.value} ${attribute.name}) +`;
+        calDescription += `+ (${attribute.coefficient} * ${attribute.value} ${attribute.name}) `;
       }
 
       return calDescription;
