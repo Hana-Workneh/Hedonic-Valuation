@@ -2,7 +2,7 @@
  <!-- eslint-disable  -->
 <template>
     <footer>
-      <p>&copy; 2023 Rahove Technologies. All rights reserved.</p>
+      <p>&copy; 2023 Amanuel Hedonic Calculations. All rights reserved.</p>
     </footer>
   </template>
   
