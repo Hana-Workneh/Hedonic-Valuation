@@ -1,3 +1,5 @@
+<!-- eslint-disable vue/multi-word-component-names -->
+ <!-- eslint-disable  -->
 <template>
     <footer>
       <p>&copy; 2023 Rahove Technologies. All rights reserved.</p>
@@ -6,7 +8,7 @@
   
   <script>
   export default {
-    name: 'Footer',
+    name: 'AppFooter',
   };
   </script>
   

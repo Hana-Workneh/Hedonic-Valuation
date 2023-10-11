@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div id="app">
     <header>
@@ -8,18 +9,18 @@
       <!-- Include the HedonicInput component here -->
       <HedonicInput />
     </main>
-    <Footer />
+    <AppFooter />
   </div>
 </template>
 
 <script>
 import HedonicInput from './components/HedonicInput.vue'; // Import your HedonicInput component
-import Footer from './components/Footer.vue';
+import AppFooter from './components/AppFooter.vue';
 
 export default {
   components: {
     HedonicInput, // Register the HedonicInput component
-    Footer
+    AppFooter
   }
 };
 </script>
@@ -42,7 +43,7 @@ header {
   background-color: #4197f3;
   color: white;
   padding: 10px 0;
-  font-size: 24px;
+  font-size: 22px;
 }
 
 main {
