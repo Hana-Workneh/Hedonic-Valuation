@@ -172,7 +172,7 @@
       },
       generateCustomCalculation() {
       // Generate a description of the custom calculation
-      let calDescription = `Custom Calculation:\n`;
+      let calDescription = `Custom Selling Price Calculation:\n`;
 
       for (const attribute of this.customAttributes) {
         calDescription += `+ (${attribute.coefficient} * ${attribute.value} ${attribute.name}) `;
