@@ -49,7 +49,7 @@ import AppFooter from './components/AppFooter.vue';
 export default {
   data() {
     return {
-      userAuthenticated: true,
+      userAuthenticated: false,
       showLogin: false,
       showSignUp: false,
     };
