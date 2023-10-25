@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <header class="app-header bg-blue-500 text-white p-4">
-      <h2 class="text-3xl font-semibold">Hedonic Valuation Input</h2>
+      <h2 class="text-3xl font-semibold bg-transparent">Hedonic Valuation Input</h2>
     </header>
     <main class="p-4">
       <div class="input-container mb-6">
@@ -10,6 +10,7 @@
           v-model="selectedModel"
           class="p-2 bg-white border border-gray-300 rounded-lg appearance-none focus:outline-none focus:border-blue-500"
         >
+          <option value="" disabled selected>Click here to select a pricing model</option>
           <option value="amuelResearch">Amanuel's Research</option>
           <option value="customAttributes">Custom Attributes and Coefficients</option>
         </select>
@@ -84,7 +85,7 @@
   </div>
 
       <!-- Display the calculated selling price -->
-      <div v-if="sellingPrice !== null" class="result-container mt-6">
+      <div v-if="sellingPrice !== null && calculateButtonClicked" class="result-container mt-6">
         <div class="result-card p-4 border border-gray-400 rounded-lg">
           <h2 class="text-xl font-semibold mb-2">Selling Price:</h2>
           <p class="text-2xl text-blue-700">{{ sellingPrice }}</p>
@@ -123,6 +124,7 @@ export default {
     savedCustomAttributes: [],
     savedCustomAttributesTag: '',
     showTagNamePopup: false, // Controls the visibility of the tag name pop-up
+    calculateButtonClicked: false,
     };
   },
   computed: {
@@ -149,6 +151,7 @@ export default {
       } else if (this.selectedModel === 'customAttributes') {
         this.sellingPrice = this.calculateCustomSellingPrice();
       }
+      this.calculateButtonClicked = true;
     },
     calculateAmanuelResearchSellingPrice() {
       // Calculate selling price based on Amanuel's Research attributes and coefficients
