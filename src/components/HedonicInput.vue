@@ -18,7 +18,7 @@
         <SavedAttributes />
         <!-- Back button to return to the attributes input -->
         <button
-          @click="showAttributes = true"
+          @click="showAttributes = false"
           class="absolute top-0 left-0 m-2 px-4 py-2  bg-blue-500 text-white rounded-lg hover:bg-blue-700"
         >
           Back
@@ -120,6 +120,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import SavedAttributes from './SavedAttributes.vue';
 
 export default {
@@ -145,6 +146,7 @@ export default {
     customAttributesTag: '',
     savedCustomAttributes: [],
     savedCustomAttributesTag: '',
+    tagNameInput: '',
     showTagNamePopup: false, // Controls the visibility of the tag name pop-up
     calculateButtonClicked: false,
     showAttributes: false, // Initially, show the attributes input
@@ -229,25 +231,48 @@ export default {
       this.customAttributes.push({ name: '', value: '', coefficient: '' });
     },
     saveCustomAttributes() {
-    if (this.customAttributesTag) {
-      // Create an object to represent the saved custom attributes and tag name
-      const savedCustomAttributesItem = {
-        tag: this.customAttributesTag,
-        attributes: this.customAttributes,
+      const authorizationToken = localStorage.getItem('token'); // Retrieve the token from localStorage
+
+      const requestData = {
+        dataArray: this.customAttributes,
+        tagName: this.tagNameInput,
       };
 
-      // Add the saved custom attributes to your list
-      this.savedCustomAttributes.push(savedCustomAttributesItem);
-
-      // Reset the tag name input and hide the tag name pop-up
-      this.customAttributesTag = '';
-      this.showTagNamePopup = false;
-    }
-  },
-  showSavedAttributes() {
-      this.showAttributes = true; // Clicking "My Attributes" button switches to saved attributes page
+      axios
+        .post('http://localhost:9000/user/createhedonic', requestData, {
+          headers: {
+            Authorization: 'Bearer ' + authorizationToken, // Include the token in the request header
+          },
+        })
+        .then(response => {
+          // Handle success
+          console.log('Attributes saved successfully', response.data);
+        })
+        .catch(error => {
+          // Handle error
+          console.error('Failed to save attributes', error);
+        });
     },
-  },
+    loadSavedAttributes() {
+      const authorizationToken = localStorage.getItem('token'); // Retrieve the token from localStorage
+
+      axios
+        .get('http://localhost:9000/user/hedonic', {
+          headers: {
+            Authorization: 'Bearer ' + authorizationToken, // Include the token in the request header
+          },
+        })
+        .then(response => {
+          // Handle success
+          this.savedAttributes = response.data;
+          this.showSavedAttributes = true;
+        })
+        .catch(error => {
+          // Handle error
+          console.error('Failed to load saved attributes', error);
+        });
+      }
+    },
 
   created() {
     // Retrieve saved custom attributes from local storage on component creation

@@ -29,31 +29,27 @@
         errorMessage: '',
       };
     },
+
     methods: {
-      loginUser() {
-        const userData = {
+    loginUser() {
+      axios.post('https://hedonic-backend.onrender.com/user/login', {
         email: this.email,
         password: this.password,
-      };
-        axios
-          .post('https://97e2a7a5d2ba0d8694e821f9bf883e79.serveo.net/user/login', userData, {
-          headers: {
-            'Content-Type': 'application/json', // Specify content type as JSON
-          }})
-          .then(() => {
-            // Handle the login success
-            console.log('User logged in successfully');
-            this.errorMessage = ''; // Clear any previous error messages
-            this.$emit('authenticated'); // Emit the authenticated event
-          })
-          .catch(error => {
-            // Handle login errors
-            this.errorMessage = 'Login failed. Please check your credentials.';
-            console.error('Login failed:', error);
-          });
-      },
+      })
+      .then(response => {
+        const token = response.data.token;
+        // Store the token in localStorage
+        localStorage.setItem('token', token);
+        // Redirect to the main content or perform other actions as needed
+        this.$router.push('/maincontent');
+      })
+      .catch(error => {
+        this.errorMessage = 'Login failed. Please check your credentials.';
+        console.error('Login failed:', error);
+      });
     },
-  };
+  },
+};
   </script>
   
   <style scoped>
