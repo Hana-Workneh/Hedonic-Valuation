@@ -4,7 +4,27 @@
       <h2 class="text-3xl font-semibold bg-transparent">Hedonic Valuation Input</h2>
     </header>
     <main class="p-4">
-      <div class="input-container mb-6">
+      <!-- My Attributes button at the top right corner -->
+      <button
+        @click="showSavedAttributes"
+        class="absolute top-0 right-0 m-2 px-4 py-2 bg-gray-700 text-white rounded-lg"
+      >
+        My Attributes
+      </button>
+      
+      <!-- Conditional rendering based on showAttributes state -->
+      <div v-if="showAttributes">
+        <!-- Show saved attributes page -->
+        <SavedAttributes />
+        <!-- Back button to return to the attributes input -->
+        <button
+          @click="showAttributes = true"
+          class="absolute top-0 left-0 m-2 px-4 py-2  bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+        >
+          Back
+        </button>
+      </div>
+      <div v-if="!showAttributes" class="input-container mb-6">
         <label class="block text-gray-700 text-sm font-bold mb-2">Select a pricing model:</label>
         <select
           v-model="selectedModel"
@@ -47,7 +67,7 @@
       </div>
 
       <!-- Custom attributes and coefficients input -->
-      <div v-else-if="selectedModel === 'customAttributes'" class="custom-container p-4 border border-gray-300 rounded-lg">
+      <div v-else-if="selectedModel === 'customAttributes' && !showAttributes" class="custom-container p-4 border border-gray-300 rounded-lg">
         <h2 class="text-xl font-semibold mb-2">Custom Attributes and Coefficients</h2>
         <button @click="addCustomAttribute" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none">
           Add Custom Attribute
@@ -100,6 +120,8 @@
 </template>
 
 <script>
+import SavedAttributes from './SavedAttributes.vue';
+
 export default {
   data() {
     return {
@@ -125,6 +147,7 @@ export default {
     savedCustomAttributesTag: '',
     showTagNamePopup: false, // Controls the visibility of the tag name pop-up
     calculateButtonClicked: false,
+    showAttributes: false, // Initially, show the attributes input
     };
   },
   computed: {
@@ -221,6 +244,9 @@ export default {
       this.showTagNamePopup = false;
     }
   },
+  showSavedAttributes() {
+      this.showAttributes = true; // Clicking "My Attributes" button switches to saved attributes page
+    },
   },
 
   created() {
@@ -230,6 +256,9 @@ export default {
       this.savedCustomAttributes = JSON.parse(savedAttributes);
       console.log('Saved custom attributes:', savedAttributes);
     }
+  },
+  components: {
+    SavedAttributes,
   },
 };
 </script>
