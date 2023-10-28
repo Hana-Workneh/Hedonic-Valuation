@@ -6,7 +6,7 @@
     <main class="p-4">
       <!-- My Attributes button at the top right corner -->
       <button
-        @click="showSavedAttributes"
+        @click="loadSavedAttributes"
         class="absolute top-0 right-0 m-2 px-4 py-2 bg-gray-700 text-white rounded-lg"
       >
         My Attributes
@@ -84,25 +84,29 @@
         >
           Calculate Selling Price
         </button>
+        
         <!-- Conditionally render the "Save Custom Attributes" button -->
-  <button
-    @click="showTagNamePopup = true"
-    v-if="selectedModel === 'customAttributes' && customAttributes.length > 0 && !showTagNamePopup"
-    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none ml-4 mt-4"
-  >
-    Save Custom Attributes
-  </button>
-
-    <!-- Conditionally render the tag name input dialog with the "popup-card" class -->
-    <div v-if="showTagNamePopup" class="popup-card tag-name-popup">
-      <input v-model="customAttributesTag" placeholder="Enter Tag Name" class="form-input rounded-lg border border-gray-300 py-2 px-4">
-      <div class="mt-4">
-        <button @click="saveCustomAttributes" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Save</button>
-        <button @click="showTagNamePopup = false" class="bg-red-500 hover:bg-red-700 text-white font-bold ml-4 py-2 px-4 rounded">Cancel</button>
+        <button
+          @click="showTagNamePopup = true"
+          v-if="selectedModel === 'customAttributes' && customAttributes.length > 0 && !showTagNamePopup"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none ml-4 mt-4"
+        >
+          Save Custom Attributes
+        </button>
+        <button @click="clearForm" v-if="selectedModel === 'customAttributes' && customAttributes.length > 0" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none ml-4 mt-4">
+          Clear
+        </button>
+        <!-- Conditionally render the tag name input dialog with the "popup-card" class -->
+        <div v-if="showTagNamePopup" class="popup-card tag-name-popup">
+          <input v-model="customAttributesTag" placeholder="Enter Tag Name" class="form-input rounded-lg border border-gray-300 py-2 px-4">
+          <div class="mt-4">
+            <button @click="saveCustomAttributes" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Save</button>
+            <button @click="showTagNamePopup = false" class="bg-red-500 hover:bg-red-700 text-white font-bold ml-4 py-2 px-4 rounded">Cancel</button>
+          </div>
+        </div>
       </div>
-    </div>
 
-  </div>
+
       <!-- Display the calculated selling price -->
       <div v-if="sellingPrice !== null && calculateButtonClicked" class="result-container mt-6">
         <div class="result-card p-4 border border-gray-400 rounded-lg">
@@ -125,28 +129,29 @@ export default {
     return {
       selectedModel: '', // 'amuelResearch' or 'customAttributes'
       amuelResearchAttributes: {
-'Number of Bedrooms': { value: 1, coefficient: 224937.817 },
-'Age of House': { value: 1, coefficient: 251411.040 },
-'Area of the House': { value: 0, coefficient: 10008.165 },
-'Number of Floors': { value: 1, coefficient: 715672.940 },
-'Tenure Type': { value: 1, coefficient: 797385.288 },
-'Parking Space': { value: 1, coefficient: 907257.172 },
-'Green Area': { value: 1, coefficient: 782614.693 },
-'Proximity to Taxi Stop': { value: 0, coefficient: 826206.788 },
-'Type': { value: 0, coefficient: 359697.959 },
-'Corner Place': { value: 0, coefficient: 781088.192 },
-},
+        'Number of Bedrooms': { value: 1, coefficient: 224937.817 },
+        'Age of House': { value: 1, coefficient: 251411.040 },
+        'Area of the House': { value: 0, coefficient: 10008.165 },
+        'Number of Floors': { value: 1, coefficient: 715672.940 },
+        'Tenure Type': { value: 1, coefficient: 797385.288 },
+        'Parking Space': { value: 1, coefficient: 907257.172 },
+        'Green Area': { value: 1, coefficient: 782614.693 },
+        'Proximity to Taxi Stop': { value: 0, coefficient: 826206.788 },
+        'Type': { value: 0, coefficient: 359697.959 },
+        'Corner Place': { value: 0, coefficient: 781088.192 },
+      },
       customAttributes: [], // Array to store custom attributes and coefficients
       sellingPrice: null,
       beta0: 25312371.109,
       // New data property for the tag name input field
-    customAttributesTag: '',
-    savedCustomAttributes: [],
-    savedCustomAttributesTag: '',
-    tagNameInput: '',
-    showTagNamePopup: false, // Controls the visibility of the tag name pop-up
-    calculateButtonClicked: false,
-    showAttributes: false, // Initially, show the attributes input
+      customAttributesTag: '',
+      // Additional properties for saving custom attributes
+      savedCustomAttributes: [],
+      savedCustomAttributesTag: '',
+      tagNameInput: '',
+      showTagNamePopup: false, // Controls the visibility of the tag name pop-up
+      calculateButtonClicked: false,
+      showAttributes: false, // Initially, show the attributes input
     };
   },
   computed: {
@@ -162,8 +167,7 @@ export default {
 
     hasCustomAttributes() {
       return this.customAttributes.some(attribute => attribute.name && attribute.value !== null);
-    }
-
+    },
   },
   methods: {
     calculateSellingPrice() {
@@ -178,14 +182,11 @@ export default {
     calculateAmanuelResearchSellingPrice() {
       // Calculate selling price based on Amanuel's Research attributes and coefficients
       const epsilon = 1; // Constant ε
-
       let sellingPrice = this.beta0 + epsilon; // Initialize with the constant ε
-
       for (const attribute in this.amuelResearchAttributes) {
         const { value, coefficient } = this.amuelResearchAttributes[attribute];
         sellingPrice += value * coefficient;
       }
-
       return sellingPrice;
     },
     calculateCustomSellingPrice() {
@@ -202,37 +203,37 @@ export default {
     generateAmanuelResearchCalculation() {
       // Generate a description of the Amanuel's Research calculation
       const epsilon = 1; // Constant ε
-
       let calculationDescription = `:\n`;
       calculationDescription += `Selling Price = ${this.beta0} + ${epsilon}`;
-
       for (const attribute in this.amuelResearchAttributes) {
         const { value, coefficient } = this.amuelResearchAttributes[attribute];
         calculationDescription += ` + (${coefficient} * ${value} ${attribute})`;
       }
-
       return calculationDescription;
     },
     generateCustomCalculation() {
-    // Generate a description of the custom calculation
-    let calDescription = `Custom Selling Price Calculation:\n`;
-
-    for (const attribute of this.customAttributes) {
-      calDescription += `+ (${attribute.coefficient} * ${attribute.value} ${attribute.name}) `;
-    }
-
-    return calDescription;
-  },
+      // Generate a description of the custom calculation
+      let calDescription = `Custom Selling Price Calculation:\n`;
+      for (const attribute of this.customAttributes) {
+        calDescription += `+ (${attribute.coefficient} * ${attribute.value} ${attribute.name}) `;
+      }
+      return calDescription;
+    },
     addCustomAttribute() {
       // Add a new custom attribute to the list
-      this.customAttributes.push({ name: '', value: '', coefficient: '' });
+      this.customAttributes.push({ name: '', value: null, coefficient: null });
     },
+    clearForm() {
+    this.customAttributes = [];
+    this.sellingPrice = null;
+    // Optionally, clear the selectedModel or any other form-specific data
+  },
     saveCustomAttributes() {
       const authorizationToken = localStorage.getItem('token'); // Retrieve the token from localStorage
 
       const requestData = {
-        dataArray: this.customAttributes,
-        tagName: this.tagNameInput,
+        dataArray: this.customAttributes, // Use customAttributes instead of savedCustomAttributes
+        tagName: this.customAttributesTag, // Use customAttributesTag
       };
 
       axios
@@ -244,6 +245,8 @@ export default {
         .then(response => {
           // Handle success
           console.log('Attributes saved successfully', response.data);
+          // Close the popup after saving
+        this.showTagNamePopup = false;
         })
         .catch(error => {
           // Handle error
@@ -268,9 +271,8 @@ export default {
           // Handle error
           console.error('Failed to load saved attributes', error);
         });
-      }
     },
-
+  },
   created() {
     // Retrieve saved custom attributes from local storage on component creation
     const savedAttributes = localStorage.getItem('savedCustomAttributes');
@@ -338,3 +340,4 @@ export default {
 }
 
 </style>
+
