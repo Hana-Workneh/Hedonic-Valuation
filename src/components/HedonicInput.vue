@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <header class="app-header bg-blue-500 text-white p-4">
-      <h2 class="text-3xl font-semibold bg-transparent">Hedonic Valuation Input</h2>
+      <h2 class="text-3xl font-semibold bg-transparent">Hedonic Valuation</h2>
     </header>
     <main class="p-4">
       <!-- My Attributes button at the top right corner -->

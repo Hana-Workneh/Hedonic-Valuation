@@ -24,7 +24,6 @@
         <button type="button" @click="loginUser" class="bg-blue-500 hover:bg-blue-700 text-white font-bold ml-4 py-2 px-4 rounded">Login</button>
       </div>
     </form>
-    <p v-if="errorMessage" class="text-red-500 mt-2">{{ errorMessage }}</p>
   </div>
 </template>
 
@@ -57,17 +56,20 @@ export default {
           confirmPassword: this.confirmPassword,
         })
         .then(response => {
-          this.$emit('authenticated'); // Trigger authenticated event
+          // this.$emit('authenticated'); // Trigger authenticated event
           const token = response.data.token;
           // Store the token in localStorage
           localStorage.setItem('token', token);
+          this.$emit('authenticated'); // Trigger authenticated event
           // Redirect to the main content or perform other actions as needed
           this.$router.push('/maincontent'); // Navigate to another page
         })
         .catch(error => {
-          this.errorMessage = 'Registration failed. Please check your information.';
-          console.error('Registration failed:', error);
-        });
+  console.error('Registration failed:', error);
+  console.log('Response data:', error.response.data); // Log the response data
+  this.errorMessage = 'Registration failed. Please check your information.';
+});
+
     },
     validatePassword() {
       const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;

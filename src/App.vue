@@ -37,7 +37,7 @@
         </div>
       </div>
     </main>
-    <RouterLink active-class="active" to="/">Home</RouterLink>
+    <RouterLink active-class="active" to="/"></RouterLink>
     <AppFooter />
   </div>
 </template>
