@@ -57,6 +57,7 @@ export default {
           confirmPassword: this.confirmPassword,
         })
         .then(response => {
+          this.$emit('authenticated'); // Trigger authenticated event
           const token = response.data.token;
           // Store the token in localStorage
           localStorage.setItem('token', token);
