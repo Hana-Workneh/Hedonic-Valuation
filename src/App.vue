@@ -3,6 +3,7 @@
     <!-- <header>
       <h1>Hedonic Valuation App</h1>
     </header> -->
+    
     <div class="max-w-xl mx-auto mt-8 p-6 bg-blue-100 text-blue-800 rounded-lg shadow-lg" v-if="!showLogin && !showSignUp">
       <!-- Card describing Hedonic Valuation -->
       <h2 class="text-2xl font-semibold mb-3">Hedonic Valuation</h2>
@@ -36,6 +37,7 @@
         </div>
       </div>
     </main>
+    <RouterLink active-class="active" to="/">Home</RouterLink>
     <AppFooter />
   </div>
 </template>

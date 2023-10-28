@@ -103,7 +103,6 @@
     </div>
 
   </div>
-
       <!-- Display the calculated selling price -->
       <div v-if="sellingPrice !== null && calculateButtonClicked" class="result-container mt-6">
         <div class="result-card p-4 border border-gray-400 rounded-lg">
@@ -113,8 +112,6 @@
           <p class="text-gray-700">{{ calculationDescription }}</p>
         </div>
       </div>
-      
-
     </main>
   </div>
 </template>
@@ -239,7 +236,7 @@ export default {
       };
 
       axios
-        .post('http://localhost:9000/user/createhedonic', requestData, {
+        .post('https://hedonic-backend.onrender.com/user/createhedonic', requestData, {
           headers: {
             Authorization: 'Bearer ' + authorizationToken, // Include the token in the request header
           },
@@ -257,7 +254,7 @@ export default {
       const authorizationToken = localStorage.getItem('token'); // Retrieve the token from localStorage
 
       axios
-        .get('http://localhost:9000/user/hedonic', {
+        .get('https://hedonic-backend.onrender.com/user/hedonic', {
           headers: {
             Authorization: 'Bearer ' + authorizationToken, // Include the token in the request header
           },
