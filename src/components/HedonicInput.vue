@@ -6,11 +6,12 @@
     <main class="p-4">
       <!-- My Attributes button at the top right corner -->
       <button
-        @click="loadSavedAttributes"
-        class="absolute top-0 right-0 m-2 px-4 py-2 bg-gray-700 text-white rounded-lg"
-      >
-        My Attributes
-      </button>
+      @click="showAttributes = !showAttributes"
+      class="absolute top-0 right-0 m-2 px-4 py-2 bg-gray-700 text-white rounded-lg"
+    >
+      My Attributes
+    </button>
+    
       
       <!-- Conditional rendering based on showAttributes state -->
       <div v-if="showAttributes">
@@ -152,6 +153,7 @@ export default {
       showTagNamePopup: false, // Controls the visibility of the tag name pop-up
       calculateButtonClicked: false,
       showAttributes: false, // Initially, show the attributes input
+      showSavedAttributes: false,
     };
   },
   computed: {

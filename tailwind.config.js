@@ -5,7 +5,14 @@ module.exports = {
     './src/components/HedonicInput.vue', // Add the path to HedonicInput.vue
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Nunito', 'sans'], // Change 'Nunito' to the desired font
+      },
+      colors: {
+        primary: '#3490dc', // Customize your color palette
+      },
+    },
   },
   plugins: [],
 }

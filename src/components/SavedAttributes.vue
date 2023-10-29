@@ -1,41 +1,67 @@
-<!-- SavedAttributes.vue -->
 <template>
-    <div>
-      <h2>Saved Attributes</h2>
-      <!-- Loop through saved attributes and display them as expandable cards -->
-      <div v-for="tag in savedAttributes" :key="tag.id">
-        <div @click="toggleCard(tag.id)">
-          <h3>{{ tag.tagName }}</h3>
-        </div>
-        <div v-if="expandedTags.includes(tag.id)">
-          <div v-for="attribute in tag.attributes" :key="attribute.id">
-            <p>{{ attribute.name }}</p>
-            <p>{{ attribute.value }}</p>
-            <p>{{ attribute.coefficient }}</p>
-          </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div v-for="(tag, tagIndex) in savedAttributes" :key="tag._id">
+      <div @click="toggleCard(tagIndex)" class="cursor-pointer p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition duration-300">
+        <h3 class="text-lg font-medium">{{ tag.tagName }}</h3>
+      </div>
+      <div v-if="expandedTags.includes(tagIndex)">
+        <div v-for="attribute in tag.dataArray" :key="attribute._id" class="p-4 mb-4 bg-white rounded-lg shadow border border-gray-300">
+          <p class="text-gray-700 font-medium">Attribute Name: {{ attribute.name }}</p>
+          <p class="text-gray-600">Attribute Value: {{ attribute.value }}</p>
+          <p class="text-gray-600">Attribute Coefficient: {{ attribute.coefficient }}</p>
         </div>
       </div>
     </div>
-  </template>
-  
-  
-  <script>
-  export default {
-    data() {
-      return {
-        savedAttributes: [/* Your saved attributes data goes here */],
-        expandedTags: [],
-      };
+  </div>
+</template>
+
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      savedAttributes: [],
+      expandedTags: [],
+    };
+  },
+  methods: {
+    toggleCard(tagIndex) {
+      // Use a Set to manage the expanded tags
+      const expandedSet = new Set(this.expandedTags);
+
+      if (expandedSet.has(tagIndex)) {
+        // If the tagIndex is in the set, remove it to collapse the card
+        expandedSet.delete(tagIndex);
+      } else {
+        // If the tagIndex is not in the set, add it to expand the card
+        expandedSet.add(tagIndex);
+      }
+
+      // Convert the Set to an array directly
+      this.expandedTags = [...expandedSet];
     },
-    methods: {
-      toggleCard(tagId) {
-        if (this.expandedTags.includes(tagId)) {
-          this.expandedTags = this.expandedTags.filter(id => id !== tagId);
-        } else {
-          this.expandedTags.push(tagId);
-        }
-      },
+
+    fetchSavedAttributes() {
+      const authorizationToken = localStorage.getItem('token'); // Retrieve the token from localStorage
+
+      axios
+        .get('https://hedonic-backend.onrender.com/user/hedonic', {
+          headers: {
+            Authorization: 'Bearer ' + authorizationToken, // Include the token in the request header
+          },
+        })
+        .then(response => {
+          this.savedAttributes = response.data;
+        })
+        .catch(error => {
+          console.error('Failed to fetch saved attributes', error);
+        });
     },
-  };
-  </script>
-  
+  },
+  created() {
+    this.fetchSavedAttributes();
+  },
+};
+</script>
