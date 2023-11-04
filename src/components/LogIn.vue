@@ -1,8 +1,4 @@
 <template>
-  <div>
-    <!-- Your login form content here -->
-    <router-link to="/maincontent"></router-link>
-  </div>
   <button @click="goBack"
   class="absolute top-0 left-0 m-2 px-4 py-2  bg-blue-500 text-white rounded-lg hover:bg-blue-700"
 >
@@ -41,9 +37,9 @@
 
     methods: {
     goBack() {
-      this.$router.go(-1); // Go back to the previous page but with vue routing
+      // this.$router.go(-1); // Go back to the previous page but with vue routing
       // Use JavaScript's built-in history to navigate back
-      // window.history.go(-1);
+      window.history.go(-1);
     },
     loginUser() {
       axios.post('https://hedonic-backend.onrender.com/user/login', {
