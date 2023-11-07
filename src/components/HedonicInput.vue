@@ -109,7 +109,7 @@
 
 
       <!-- Display the calculated selling price -->
-      <div v-if="sellingPrice !== null && calculateButtonClicked" class="result-container mt-6">
+      <div v-if="sellingPrice !== null && calculateButtonClicked && !showAttributes" class="result-container mt-6">
         <div class="result-card p-4 border border-gray-400 rounded-lg">
           <h2 class="text-xl font-semibold mb-2">Selling Price:</h2>
           <p class="text-2xl text-blue-700">{{ sellingPrice }}</p>
